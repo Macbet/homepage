@@ -87,6 +87,12 @@ const groups: Group[] = [
         image: { src: "/templates.png", alt: "Organization templates: Plan, Plan and Apply, Destroy and CLI variants", width: 1400, height: 671 },
         extra: { link: { href: `${DOCS}/run-terraform/workspaces/workspace-scheduler`, text: "Workspace scheduler" } },
       },
+      {
+        title: "Run triggers",
+        description: "Chain workspaces that depend on each other. When one applies a change, Terrakube queues a run in the workspaces that consume its outputs, so a VPN never falls behind its VPC.",
+        link: { href: `${DOCS}/run-terraform/workspaces/run-triggers`, text: "Run triggers" },
+        image: { src: "/run-triggers.png", alt: "Run triggers of a vpn workspace: it runs after vpc, and app and monitoring run after it", width: 1400, height: 1011 },
+      },
     ],
   },
   {
@@ -98,6 +104,12 @@ const groups: Group[] = [
         description: "A team maps an identity provider group to a role in the organization, so people only see what their job requires.",
         link: { href: `${DOCS}/set-up/organizations/team-management`, text: "Team management" },
         image: { src: "/teams.png", alt: "Teams settings with an admin team and a developers team", width: 1400, height: 481 },
+      },
+      {
+        title: "Policies as code",
+        description: "Write Open Policy Agent policies once, keep them in Git, and attach them to the organization, a project, a tag or a workspace. Every plan is checked before apply: advisory policies warn, soft-mandatory ones wait for an override with a justification, hard-mandatory ones stop the run.",
+        link: { href: `${DOCS}/govern/policy-enforcement-opa`, text: "Policy governance (OPA)" },
+        image: { src: "/opa-policy-checks.png", alt: "Policy checks of a run: one policy set passed, one advisory warning for missing tags, one soft-mandatory failure waiting for an override", width: 1400, height: 1011 },
       },
     ],
     compact: [

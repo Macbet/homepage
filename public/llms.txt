@@ -11,6 +11,8 @@
 - [CLI-driven workflow](https://docs.terrakube.io/run-terraform/workspaces/cli-driven-workflow)
 - [API-driven workflow](https://docs.terrakube.io/run-terraform/workspaces/api-driven-workflow)
 - [Templates](https://docs.terrakube.io/set-up/organizations/templates)
+- [Run triggers](https://docs.terrakube.io/run-terraform/workspaces/run-triggers)
+- [Policy governance (OPA)](https://docs.terrakube.io/govern/policy-enforcement-opa)
 - [Private registry](https://docs.terrakube.io/private-registry/private-registry)
 - [Terrakube CLI](https://docs.terrakube.io/integrate/terrakube-cli)
 
