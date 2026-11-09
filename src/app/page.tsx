@@ -4,7 +4,7 @@ import HamburgerMenu from "./HamburgerMenu";
 
 type Shot = { src: string; alt: string; width: number; height: number };
 
-const shotWidths = (name: string) => (name.startsWith("workspaces") ? [768, 1152, 2304] : [700, 1000, 1400]);
+const shotWidths = (name: string) => (/^(workspaces|hero-)/.test(name) ? [768, 1152, 2304] : [700, 1000, 1400]);
 const srcSet = (name: string, ext: string) =>
   shotWidths(name)
     .map((w) => `/img/${name}-${w}.${ext} ${w}w`)
@@ -41,6 +41,9 @@ function ThemedShot({ shot, sizes, priority }: { shot: Shot; sizes: string; prio
 const DOCS = "https://docs.terrakube.io";
 const GITHUB = "https://github.com/terrakube-io/terrakube";
 const SLACK = "https://join.slack.com/t/terrakubeworkspace/shared_invite/zt-2cx6yn95t-2CTBGvsQhBQJ5bfbG4peFg";
+
+/** The hero sequence, captured from the same run at four points of its life. */
+const heroFrames = ["hero-queued", "hero-approval", "hero-applying", "hero-done"];
 
 const navLinks = [
   { href: DOCS, icon: "/img/gitbooklogo.webp", text: "Documentation" },
@@ -279,17 +282,20 @@ export default async function Home() {
               </p>
             </div>
             <div className="hero-shot">
-              <div className="frame">
-                <ThemedShot
-                  shot={{
-                    src: "/workspaces.png",
-                    alt: "Workspace list with completed, running, waiting approval and failed runs and their policy status",
-                    width: 2304,
-                    height: 1440,
-                  }}
-                  sizes="(min-width: 1248px) 1152px, calc(100vw - 32px)"
-                  priority
-                />
+              {/* One run, four moments: the frames crossfade in CSS; reduced motion shows the finished run. */}
+              <div
+                className="frame hero-run"
+                role="img"
+                aria-label="A run moving through its states: queued, waiting for approval with the plan to review, applying, and completed with its outputs"
+              >
+                {heroFrames.map((name, i) => (
+                  <ThemedShot
+                    key={name}
+                    shot={{ src: `/${name}.png`, alt: "", width: 2304, height: 1440 }}
+                    sizes="(min-width: 1248px) 1152px, calc(100vw - 32px)"
+                    priority={i === 0}
+                  />
+                ))}
               </div>
             </div>
           </div>

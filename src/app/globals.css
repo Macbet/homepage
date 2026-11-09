@@ -393,6 +393,55 @@ img {
   margin-top: 48px;
 }
 
+/*
+ * The hero sequence. Four captures of one run stacked in a frame; the first sets the height, the
+ * others sit on top and fade in one after another over a 20s loop, then all fade out together to
+ * start again. Reduced motion skips the loop and shows the finished run.
+ */
+.hero-run {
+  position: relative;
+}
+
+.hero-run picture + picture {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.hero-run img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@keyframes hero-run-2 {
+  0%, 25% { opacity: 0; }
+  27.5%, 97.5% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes hero-run-3 {
+  0%, 50% { opacity: 0; }
+  52.5%, 97.5% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes hero-run-4 {
+  0%, 75% { opacity: 0; }
+  77.5%, 97.5% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-run picture:nth-child(2) { animation: hero-run-2 20s linear infinite; }
+  .hero-run picture:nth-child(3) { animation: hero-run-3 20s linear infinite; }
+  .hero-run picture:nth-child(4) { animation: hero-run-4 20s linear infinite; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-run picture:last-child { opacity: 1; }
+}
+
 /* Screenshots sit in a bordered frame, like a card in the application. */
 .frame {
   overflow: hidden;

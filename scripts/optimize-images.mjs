@@ -9,7 +9,7 @@ const out = "public/img";
 await mkdir(out, { recursive: true });
 
 // width list per source: the hero is 1152px wide at the widest layout, feature rows 660px.
-const widths = (name) => (name.startsWith("workspaces") ? [768, 1152, 2304] : [700, 1000, 1400]);
+const widths = (name) => (/^(workspaces|hero-)/.test(name) ? [768, 1152, 2304] : [700, 1000, 1400]);
 
 const jobs = [];
 for (const file of await readdir("assets/screenshots")) {
