@@ -448,11 +448,36 @@ img {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.tag-groups {
+  margin: 10px 0 4px;
+}
+
+.tag-group {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+.tag-group + .tag-group {
+  margin-top: 8px;
+}
+
+.tag-group dt {
+  padding-top: 2px;
+  font-size: 13px;
+  color: var(--tk-text-secondary);
+}
+
+.tag-group dd {
+  margin: 0;
+}
+
 .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin: 8px 0 4px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -514,9 +539,9 @@ img {
 }
 
 @media (prefers-color-scheme: dark) {
-  /* Brand marks are drawn for paper, so the strip stays a paper tile inside the graphite page. */
+  /* Brand marks are drawn for paper; a dimmed paper tile keeps their colours without a white flash. */
   .sponsors {
-    background: #f0f2f5;
+    background: #c9d1d9;
     border-color: var(--tk-graphite-border);
   }
 }

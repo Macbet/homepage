@@ -56,7 +56,8 @@ type Feature = {
   extra?: { description?: string; link: { href: string; text: string } };
 };
 
-type Compact = { title: string; description: string; link: { href: string; text: string }; tags?: string[] };
+type TagGroup = { label: string; items: string[] };
+type Compact = { title: string; description: string; link: { href: string; text: string }; tags?: TagGroup[] };
 
 type Group = { title: string; intro: string; features: Feature[]; compact?: Compact[] };
 
@@ -107,13 +108,19 @@ const groups: Group[] = [
       {
         title: "Single sign-on",
         description: "Authenticate with the identity provider your organization already uses.",
-        tags: ["Azure Entra ID", "Google Cloud Identity", "Amazon Cognito", "GitHub", "Keycloak", "OIDC", "SAML"],
+        tags: [
+          { label: "Providers", items: ["Azure Entra ID", "Google Cloud Identity", "Amazon Cognito", "GitHub", "Keycloak"] },
+          { label: "Protocols", items: ["OIDC", "SAML"] },
+        ],
         link: { href: `${DOCS}/getting-started/user-management`, text: "User management" },
       },
       {
         title: "Dynamic credentials",
         description: "Cloud credentials issued at run time, nothing long-lived stored in the workspace.",
-        tags: ["Amazon Web Services", "Azure", "Google Cloud", "Vault", "OpenBao"],
+        tags: [
+          { label: "Clouds", items: ["Amazon Web Services", "Azure", "Google Cloud"] },
+          { label: "Secret stores", items: ["Vault", "OpenBao"] },
+        ],
         link: { href: `${DOCS}/user-guide/workspaces/dynamic-provider-credentials`, text: "Dynamic provider credentials" },
       },
     ],
@@ -280,11 +287,20 @@ export default function Home() {
                         <strong>{item.title}</strong>
                         <span>{item.description}</span>
                         {item.tags && (
-                          <ul className="tags" aria-label={`${item.title} providers`}>
-                            {item.tags.map((tag) => (
-                              <li key={tag}>{tag}</li>
+                          <dl className="tag-groups">
+                            {item.tags.map((group) => (
+                              <div className="tag-group" key={group.label}>
+                                <dt>{group.label}</dt>
+                                <dd>
+                                  <ul className="tags">
+                                    {group.items.map((tag) => (
+                                      <li key={tag}>{tag}</li>
+                                    ))}
+                                  </ul>
+                                </dd>
+                              </div>
                             ))}
-                          </ul>
+                          </dl>
                         )}
                         <a className="doc-link" href={item.link.href}>
                           {item.link.text} ↗
@@ -298,13 +314,10 @@ export default function Home() {
 
             <div className="cta">
               <h3>Ready to run it yourself?</h3>
-              <p>Helm or Docker Compose, your first repository connected in an afternoon.</p>
+              <p>The deployment guide takes you from an empty cluster to your first run.</p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href={`${DOCS}/getting-started/deployment`}>
                   Get started
-                </a>
-                <a className="btn btn-lg" href={DOCS}>
-                  Read the documentation
                 </a>
               </div>
             </div>
