@@ -37,6 +37,9 @@
 
   --tk-gutter: 24px;
   --tk-content: 1200px;
+
+  /* The node motif from the application's login page, as a tint over the layout background. */
+  --tk-sky: rgba(31, 41, 55, 0.075);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,11 +53,7 @@
     --tk-text: #e6edf3;
     --tk-text-secondary: #8b949e;
     --tk-text-tertiary: #7d8590;
-  }
-
-  /* The login backdrop is drawn for paper; veil it so it stays a hint on graphite. */
-  .hero {
-    background-image: linear-gradient(rgba(13, 17, 23, 0.72), rgba(13, 17, 23, 0.72)), url(/login-background.svg);
+    --tk-sky: rgba(230, 237, 243, 0.07);
   }
 }
 
@@ -105,6 +104,70 @@ img {
   max-width: var(--tk-content);
   margin: 0 auto;
   padding: 0 var(--tk-gutter);
+}
+
+/*
+ * Sky: three fixed layers of the node motif behind the page. Each layer is a masked tint, so it
+ * follows the theme; with scroll-driven animations the layers drift at different speeds while the
+ * page scrolls, which is the page's one authored motion. Without support the motif is static.
+ */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sky span {
+  position: absolute;
+  inset: -40vh 0;
+  background-color: var(--tk-sky);
+  -webkit-mask-image: url(/nodes.svg);
+  mask-image: url(/nodes.svg);
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+.sky span:nth-child(1) {
+  -webkit-mask-size: 1040px;
+  mask-size: 1040px;
+  -webkit-mask-position: 120px 60px;
+  mask-position: 120px 60px;
+  opacity: 0.55;
+  --drift: -10vh;
+}
+
+.sky span:nth-child(2) {
+  -webkit-mask-size: 760px;
+  mask-size: 760px;
+  -webkit-mask-position: -260px 300px;
+  mask-position: -260px 300px;
+  opacity: 0.8;
+  --drift: -22vh;
+}
+
+.sky span:nth-child(3) {
+  -webkit-mask-size: 540px;
+  mask-size: 540px;
+  -webkit-mask-position: 380px -140px;
+  mask-position: 380px -140px;
+  --drift: -36vh;
+}
+
+@keyframes sky-drift {
+  to {
+    transform: translateY(var(--drift));
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sky span {
+      animation: sky-drift linear both;
+      animation-timeline: scroll(root);
+    }
+  }
 }
 
 /* Header: the graphite frame of the application. */
@@ -237,13 +300,8 @@ img {
   text-decoration: underline;
 }
 
-/* Hero: the same backdrop as the application's login page. */
+/* Hero */
 .hero {
-  background-color: var(--tk-bg-layout);
-  background-image: url(/login-background.svg);
-  background-repeat: no-repeat;
-  background-position: right -320px top -120px;
-  background-size: 760px auto;
   border-bottom: 1px solid var(--tk-border-secondary);
   padding: 64px 0;
 }
@@ -676,11 +734,6 @@ img {
 }
 
 @media (max-width: 1023px) {
-  /* Below the wide layout the backdrop would sit under the headline. */
-  .hero {
-    background-image: none;
-  }
-
   /* Tablets and phones are touch-first: 44px controls, and the install command wraps. */
   .btn-lg,
   .hamburger-button {

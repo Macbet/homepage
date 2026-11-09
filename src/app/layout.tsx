@@ -34,7 +34,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="sky" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
+        {children}
+      </body>
     </html>
   );
 }
