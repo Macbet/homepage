@@ -379,11 +379,13 @@ export default function Home() {
 
       <footer className="site-footer">
         <div className="container">
-          <span>Terrakube is an open source project licensed under Apache 2.0.</span>
+          <span>
+            Terrakube is an open source project licensed under{" "}
+            <a href={`${GITHUB}/blob/main/LICENSE`}>Apache 2.0</a>.
+          </span>
           <nav aria-label="Footer">
-            <a href={DOCS}>Documentation</a>
-            <a href={GITHUB}>GitHub</a>
-            <a href={SLACK}>Slack</a>
+            <a href={`${GITHUB}/releases`}>Releases</a>
+            <a href={`${GITHUB}/blob/main/SECURITY.md`}>Security policy</a>
           </nav>
         </div>
       </footer>
