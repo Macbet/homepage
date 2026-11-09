@@ -222,6 +222,9 @@ img {
 
 /* Inline documentation link, as on the application's settings pages. */
 .doc-link {
+  display: inline-block;
+  padding: 11px 0;
+  margin: -11px 0;
   color: var(--tk-link);
   font-size: 14px;
   font-weight: 500;
@@ -236,8 +239,8 @@ img {
   background-color: var(--tk-bg-layout);
   background-image: url(/login-background.svg);
   background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 100%;
+  background-position: right -320px top -120px;
+  background-size: 760px auto;
   border-bottom: 1px solid var(--tk-border-secondary);
   padding: 64px 0;
 }
@@ -268,13 +271,8 @@ img {
 
 .hero-meta {
   margin-top: 16px;
-  font-size: 13px;
-  color: var(--tk-text-tertiary);
-}
-
-.hero-meta code {
-  font-family: var(--tk-font-mono);
-  font-size: 13px;
+  font-size: 14px;
+  color: var(--tk-text-secondary);
 }
 
 .hero-shot {
@@ -307,29 +305,51 @@ img {
   color: var(--tk-text-secondary);
 }
 
-/* Feature rows: text on one side, the screenshot on the other, a 1px rule between rows. */
-.features {
-  margin-top: 16px;
+/* Groups: a 20px title and one line of intent, then feature rows, then compact cards. */
+.group {
+  margin-top: 48px;
 }
 
+.group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--tk-border);
+}
+
+.group-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.group-intro {
+  font-size: 14px;
+  color: var(--tk-text-secondary);
+}
+
+/* Feature rows: text on one side, the screenshot on the other, a 1px rule between rows. */
 .feature {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: 48px;
   align-items: center;
   padding: 40px 0;
-  border-top: 1px solid var(--tk-border-secondary);
+  border-bottom: 1px solid var(--tk-border-secondary);
 }
 
-.feature:nth-child(even) {
+.feature:nth-child(odd) {
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
 }
 
-.feature:nth-child(even) .feature-copy {
+.feature:nth-child(odd) .feature-copy {
   order: 2;
 }
 
-.feature h3 {
+.feature h4 {
+  margin: 0;
   font-size: 20px;
   font-weight: 600;
   line-height: 1.4;
@@ -340,21 +360,73 @@ img {
   color: var(--tk-text-secondary);
 }
 
-.feature ul {
-  margin-top: 8px;
-  padding-left: 20px;
-  color: var(--tk-text-secondary);
-  columns: 2;
-  column-gap: 24px;
-}
-
-.feature li {
-  break-inside: avoid;
-}
-
-.feature .doc-link {
-  display: inline-block;
+.feature p + .doc-link,
+.feature .doc-link + p {
   margin-top: 16px;
+}
+
+/* Machine truth: the install command in monospace, in the same frame as a screenshot. */
+.code {
+  margin: 0;
+  padding: 20px 24px;
+  background: var(--tk-bg-fill);
+  color: var(--tk-text);
+  font-family: var(--tk-font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cards.compact {
+  margin-top: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 1px 8px;
+  border: 1px solid var(--tk-border);
+  border-radius: var(--tk-radius-sm);
+  background: var(--tk-bg-fill);
+  color: var(--tk-text);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+/* Closing call to action after the last group. */
+.cta {
+  margin-top: 48px;
+  padding: 40px 24px;
+  border: 1px solid var(--tk-border);
+  border-radius: var(--tk-radius-lg);
+  background: var(--tk-bg-container);
+  text-align: center;
+}
+
+.cta h3 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.33;
+}
+
+.cta p {
+  margin: 8px auto 0;
+  max-width: 560px;
+  color: var(--tk-text-secondary);
+}
+
+.cta .hero-actions {
+  justify-content: center;
+  margin-top: 24px;
 }
 
 /* Sponsors */
@@ -368,12 +440,20 @@ img {
   padding: 32px;
   border: 1px solid var(--tk-border);
   border-radius: var(--tk-radius-lg);
-  background: #ffffff;
+  background: var(--tk-bg-container);
 }
 
 .sponsors img {
   height: 28px;
   width: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Brand marks are drawn for paper; on graphite they become single-tone silhouettes. */
+  .sponsors img {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
 }
 
 /* Support: resource cards, 1px border, 8px radius, hover border in the accent. */
@@ -395,7 +475,7 @@ img {
   transition: border-color 0.15s;
 }
 
-.card:hover {
+.card-link:hover {
   border-color: var(--tk-accent);
 }
 
@@ -410,6 +490,12 @@ img {
 }
 
 .card .doc-link {
+  margin-top: 8px;
+  align-self: flex-start;
+}
+
+.card-link .doc-link {
+  padding: 0;
   margin-top: 8px;
 }
 
@@ -465,6 +551,17 @@ img {
   margin-top: 4px;
 }
 
+.community li a {
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--tk-ink-dark);
+}
+
+.community li a:hover {
+  color: var(--tk-accent-hover);
+  text-decoration: underline;
+}
+
 /* Footer */
 .site-footer {
   background: var(--tk-graphite);
@@ -481,6 +578,17 @@ img {
   gap: 8px 24px;
 }
 
+.site-footer nav {
+  display: flex;
+  gap: 16px;
+}
+
+.site-footer a {
+  display: inline-block;
+  padding: 12px 0;
+  margin: -12px 0;
+}
+
 .site-footer a:hover {
   color: var(--tk-ink-dark);
 }
@@ -494,8 +602,8 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--tk-graphite-border);
   border-radius: var(--tk-radius-md);
   background: transparent;
@@ -579,6 +687,7 @@ img {
 
   .hero {
     padding-top: 40px;
+    background-image: none;
   }
 
   .hero h1 {
@@ -606,22 +715,27 @@ img {
     font-size: 24px;
   }
 
-  .feature {
+  .feature,
+  .feature:nth-child(odd) {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
     padding: 32px 0;
   }
 
-  .feature:nth-child(even) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .feature:nth-child(even) .feature-copy {
+  .feature:nth-child(odd) .feature-copy {
     order: 0;
   }
 
-  .feature ul {
-    columns: 1;
+  .cards.compact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cta {
+    padding: 32px 16px;
+  }
+
+  .site-footer nav {
+    width: 100%;
   }
 
   .sponsors {
