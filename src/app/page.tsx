@@ -4,7 +4,7 @@ import HamburgerMenu from "./HamburgerMenu";
 
 type Shot = { src: string; alt: string; width: number; height: number };
 
-const shotWidths = (name: string) => (name.startsWith("workspaces") ? [768, 1152, 2304] : [700, 1400]);
+const shotWidths = (name: string) => (name.startsWith("workspaces") ? [768, 1152, 2304] : [700, 1000, 1400]);
 const srcSet = (name: string, ext: string) =>
   shotWidths(name)
     .map((w) => `/img/${name}-${w}.${ext} ${w}w`)
@@ -187,7 +187,7 @@ export default function Home() {
       <header className="site-header">
         <div className="container">
           <Link className="brand" href="/">
-            <Image src="/img/terrakube.webp" alt="" width={28} height={28} priority />
+            <Image src="/img/terrakube.webp" alt="" width={25} height={28} priority />
             Terrakube
           </Link>
           <nav className="site-nav" aria-label="Primary">

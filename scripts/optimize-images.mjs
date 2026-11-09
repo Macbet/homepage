@@ -9,7 +9,7 @@ const out = "public/img";
 await mkdir(out, { recursive: true });
 
 // width list per source: the hero is 1152px wide at the widest layout, feature rows 660px.
-const widths = (name) => (name.startsWith("workspaces") ? [768, 1152, 2304] : [700, 1400]);
+const widths = (name) => (name.startsWith("workspaces") ? [768, 1152, 2304] : [700, 1000, 1400]);
 
 const jobs = [];
 for (const file of await readdir("assets/screenshots")) {
@@ -31,5 +31,7 @@ for (const [file, size] of Object.entries(icons)) {
   const { name } = parse(file);
   jobs.push(sharp(join("assets/icons", file), { density: 300 }).resize({ height: size }).webp({ quality: 90, alphaQuality: 100 }).toFile(join(out, `${name}.webp`)));
 }
+// favicon: a 64px PNG from the brand mark replaces the 231 KB favicon.ico.
+jobs.push(sharp("assets/icons/terrakube.png").resize({ width: 64, height: 64, fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile("public/favicon.png"));
 await Promise.all(jobs);
 console.log(`optimised ${jobs.length} files into ${out}`);

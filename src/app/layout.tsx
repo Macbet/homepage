@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Terrakube · Infrastructure as code automation for Terraform and OpenTofu",
   description,
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.png",
   },
   openGraph: {
     title: "Terrakube",
