@@ -234,6 +234,11 @@ export default async function Home() {
               <a key={link.href} className="nav-link" href={link.href}>
                 <Image src={link.icon} alt="" width={16} height={16} />
                 {link.text}
+                {link.href === GITHUB && facts && (
+                  <span className="star-badge" aria-label={`${facts.stars} stars`}>
+                    ★ {facts.stars}
+                  </span>
+                )}
               </a>
             ))}
           </nav>
@@ -261,20 +266,11 @@ export default async function Home() {
                 </a>
               </div>
               <p className="hero-meta">
-                {facts && (
+                {facts?.release && (
                   <>
-                    <a href={GITHUB}>
-                      <Image src="/github-mark-white.svg" alt="" width={14} height={14} className="invert-on-light" />
-                      {facts.stars} stars on GitHub
+                    <a href={`${GITHUB}/releases/latest`}>
+                      Release <code>{facts.release.tag}</code>, {facts.release.date}
                     </a>
-                    {facts.release && (
-                      <>
-                        <span aria-hidden="true"> · </span>
-                        <a href={`${GITHUB}/releases/latest`}>
-                          Release <code>{facts.release.tag}</code>, {facts.release.date}
-                        </a>
-                      </>
-                    )}
                     <span aria-hidden="true"> · </span>
                   </>
                 )}

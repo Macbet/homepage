@@ -193,6 +193,18 @@ img {
   height: 16px;
 }
 
+/* Star count next to GitHub, like a repository badge: mono digits on a graphite chip. */
+.star-badge {
+  padding: 0 6px;
+  border: 1px solid var(--tk-graphite-border);
+  border-radius: var(--tk-radius-sm);
+  background: var(--tk-graphite-elevated);
+  color: var(--tk-ink-dark);
+  font-family: var(--tk-font-mono);
+  font-size: 12px;
+  line-height: 18px;
+}
+
 /* Buttons follow the application controls: 32px, 6px radius, one primary per region. */
 .btn {
   display: inline-flex;
