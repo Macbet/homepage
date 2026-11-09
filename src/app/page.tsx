@@ -1,19 +1,39 @@
-import Image, { getImageProps } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import HamburgerMenu from "./HamburgerMenu";
 
 type Shot = { src: string; alt: string; width: number; height: number };
 
-/** A product screenshot captured in both application themes; the dark capture is served to dark-scheme visitors. */
+const shotWidths = (name: string) => (name.startsWith("workspaces") ? [768, 1152, 2304] : [700, 1400]);
+const srcSet = (name: string, ext: string) =>
+  shotWidths(name)
+    .map((w) => `/img/${name}-${w}.${ext} ${w}w`)
+    .join(", ");
+
+/**
+ * A product screenshot captured in both application themes, pre-rendered as AVIF and WebP by
+ * scripts/optimize-images.mjs. The dark capture is served to dark-scheme visitors.
+ */
 function ThemedShot({ shot, sizes, priority }: { shot: Shot; sizes: string; priority?: boolean }) {
-  const common = { alt: shot.alt, width: shot.width, height: shot.height, sizes, priority };
-  const { props: dark } = getImageProps({ ...common, src: shot.src.replace(/\.png$/, "-dark.png") });
-  const { props: light } = getImageProps({ ...common, src: shot.src });
+  const name = shot.src.replace(/^\//, "").replace(/\.png$/, "");
+  const dark = `${name}-dark`;
+  const largest = shotWidths(name).at(-1);
   return (
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcSet={dark.srcSet} sizes={dark.sizes} />
-      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes from the spread props */}
-      <img {...light} />
+      <source media="(prefers-color-scheme: dark)" type="image/avif" srcSet={srcSet(dark, "avif")} sizes={sizes} />
+      <source media="(prefers-color-scheme: dark)" type="image/webp" srcSet={srcSet(dark, "webp")} sizes={sizes} />
+      <source type="image/avif" srcSet={srcSet(name, "avif")} sizes={sizes} />
+      <img
+        src={`/img/${name}-${largest}.webp`}
+        srcSet={srcSet(name, "webp")}
+        sizes={sizes}
+        width={shot.width}
+        height={shot.height}
+        alt={shot.alt}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+      />
     </picture>
   );
 }
@@ -23,9 +43,9 @@ const GITHUB = "https://github.com/terrakube-io/terrakube";
 const SLACK = "https://join.slack.com/t/terrakubeworkspace/shared_invite/zt-2cx6yn95t-2CTBGvsQhBQJ5bfbG4peFg";
 
 const navLinks = [
-  { href: DOCS, icon: "/gitbooklogo.svg", text: "Documentation" },
+  { href: DOCS, icon: "/img/gitbooklogo.webp", text: "Documentation" },
   { href: GITHUB, icon: "/github-mark-white.svg", text: "GitHub" },
-  { href: SLACK, icon: "/slack.png", text: "Slack" },
+  { href: SLACK, icon: "/img/slack.webp", text: "Slack" },
 ];
 
 type Feature = {
@@ -140,10 +160,10 @@ helm install terrakube terrakube-repo/terrakube \\
   -n terrakube --create-namespace -f values.yaml`;
 
 const sponsors = [
-  { src: "/jetbrains.png", alt: "JetBrains", width: 155, height: 33 },
-  { src: "/gitbook.png", alt: "GitBook", width: 155, height: 33 },
-  { src: "/docker.png", alt: "Docker", width: 155, height: 33 },
-  { src: "/tuta.png", alt: "Tuta", width: 120, height: 31 },
+  { src: "/img/jetbrains.webp", alt: "JetBrains", width: 261, height: 56 },
+  { src: "/img/gitbook.webp", alt: "GitBook", width: 261, height: 56 },
+  { src: "/img/docker.webp", alt: "Docker", width: 222, height: 56 },
+  { src: "/img/tuta.webp", alt: "Tuta", width: 156, height: 56 },
 ];
 
 const support = [
@@ -167,7 +187,7 @@ export default function Home() {
       <header className="site-header">
         <div className="container">
           <Link className="brand" href="/">
-            <Image src="/terrakube.png" alt="" width={28} height={28} priority />
+            <Image src="/img/terrakube.webp" alt="" width={28} height={28} priority />
             Terrakube
           </Link>
           <nav className="site-nav" aria-label="Primary">
@@ -339,7 +359,7 @@ export default function Home() {
                 difference.
               </p>
               <a className="btn btn-lg" href={SLACK}>
-                <Image src="/slack.png" alt="" width={16} height={16} />
+                <Image src="/img/slack.webp" alt="" width={16} height={16} />
                 Join us on Slack
               </a>
             </div>
