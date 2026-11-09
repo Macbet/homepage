@@ -69,27 +69,27 @@ const groups: Group[] = [
       {
         title: "Runs you can read before you apply",
         description: "Every run shows the plan as a list of resource changes, with the console one click away. Approve it in the same view.",
-        link: { href: `${DOCS}/user-guide/workspaces/creating-workspaces`, text: "Workspaces and runs" },
+        link: { href: `${DOCS}/run-terraform/workspaces/creating-workspaces`, text: "Workspaces and runs" },
         image: { src: "/run.png", alt: "A completed run showing three resources to create, two to change and one to destroy", width: 1400, height: 760 },
       },
       {
         title: "Terraform and OpenTofu",
         description: "Pick the tool and the version per workspace. Both run against any cloud or on-premises configuration.",
-        link: { href: `${DOCS}/user-guide/workspaces/creating-workspaces`, text: "Creating workspaces" },
+        link: { href: `${DOCS}/run-terraform/workspaces/creating-workspaces`, text: "Creating workspaces" },
         image: { src: "/create-workspace.png", alt: "Choosing between Terraform and OpenTofu when creating a workspace", width: 1400, height: 709 },
       },
       {
         title: "Visual state",
         description: "Every resource in the state as a dependency diagram. Inspect attributes, compare versions, roll back.",
-        link: { href: `${DOCS}/user-guide/workspaces/terraform-state#visual-state`, text: "Terraform state" },
+        link: { href: `${DOCS}/run-terraform/workspaces/terraform-state`, text: "Terraform state" },
         image: { src: "/visual-state.png", alt: "State version shown as a diagram of VPC, subnets, gateway, instance and database", width: 1400, height: 874 },
       },
       {
         title: "Templates and schedules",
         description: "Templates define the steps a run executes, from plan and apply to custom workflows that call external tools. Schedules run them without anyone clicking.",
-        link: { href: `${DOCS}/user-guide/organizations/templates`, text: "Templates" },
+        link: { href: `${DOCS}/set-up/organizations/templates`, text: "Templates" },
         image: { src: "/templates.png", alt: "Organization templates: Plan, Plan and Apply, Destroy and CLI variants", width: 1400, height: 671 },
-        extra: { link: { href: `${DOCS}/user-guide/workspaces/workspace-scheduler`, text: "Workspace scheduler" } },
+        extra: { link: { href: `${DOCS}/run-terraform/workspaces/workspace-scheduler`, text: "Workspace scheduler" } },
       },
     ],
   },
@@ -100,7 +100,7 @@ const groups: Group[] = [
       {
         title: "Access control",
         description: "A team maps an identity provider group to a role in the organization, so people only see what their job requires.",
-        link: { href: `${DOCS}/user-guide/organizations/team-management`, text: "Team management" },
+        link: { href: `${DOCS}/set-up/organizations/team-management`, text: "Team management" },
         image: { src: "/teams.png", alt: "Teams settings with an admin team and a developers team", width: 1400, height: 481 },
       },
     ],
@@ -121,7 +121,7 @@ const groups: Group[] = [
           { label: "Clouds", items: ["Amazon Web Services", "Azure", "Google Cloud"] },
           { label: "Secret stores", items: ["Vault", "OpenBao"] },
         ],
-        link: { href: `${DOCS}/user-guide/workspaces/dynamic-provider-credentials`, text: "Dynamic provider credentials" },
+        link: { href: `${DOCS}/run-terraform/workspaces/dynamic-provider-credentials`, text: "Dynamic provider credentials" },
       },
     ],
   },
@@ -132,7 +132,7 @@ const groups: Group[] = [
       {
         title: "Private registry",
         description: "Publish, version and reuse internal modules and providers, with the usage snippet and README next to inputs and outputs.",
-        link: { href: `${DOCS}/user-guide/private-registry`, text: "Private registry" },
+        link: { href: `${DOCS}/private-registry/private-registry`, text: "Private registry" },
         image: { src: "/registry.png", alt: "A private module page with the usage block, version, source and inputs", width: 1400, height: 697 },
       },
       {
@@ -179,9 +179,41 @@ const involved = [
   { href: `${DOCS}/getting-started/deployment`, text: "Test deployments on different cloud providers" },
 ];
 
+const docs = [
+  { title: "Install it", text: "Helm on Kubernetes or Docker Compose, with the values and secrets explained.", href: `${DOCS}/getting-started/deployment`, link: "Deployment guide" },
+  { title: "Run your first workspace", text: "Connect a repository or push from the CLI, then plan and apply.", href: `${DOCS}/run-terraform/workspaces/creating-workspaces`, link: "Creating workspaces" },
+  { title: "Set up access", text: "Dex connects your identity provider; teams map groups to roles.", href: `${DOCS}/getting-started/user-management`, link: "User management" },
+  { title: "Drive it from code", text: "A CLI for day-to-day work and an API for everything else.", href: `${DOCS}/integrate/terrakube-cli`, link: "Terrakube CLI", second: { href: `${DOCS}/run-terraform/workspaces/api-driven-workflow`, text: "API-driven workflow" } },
+];
+
+type RepoFacts = { stars: string; release?: { tag: string; date: string } };
+
+/** Public facts from GitHub, read once at build time; the line is omitted if the API is unreachable. */
+async function repoFacts(): Promise<RepoFacts | null> {
+  const headers: Record<string, string> = { Accept: "application/vnd.github+json" };
+  if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  try {
+    const [repo, release] = await Promise.all([
+      fetch("https://api.github.com/repos/terrakube-io/terrakube", { headers, cache: "force-cache" }).then((r) => (r.ok ? r.json() : null)),
+      fetch("https://api.github.com/repos/terrakube-io/terrakube/releases/latest", { headers, cache: "force-cache" }).then((r) => (r.ok ? r.json() : null)),
+    ]);
+    if (!repo) return null;
+    const stars = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(repo.stargazers_count);
+    const date = release?.published_at
+      ? new Intl.DateTimeFormat("en", { month: "long", day: "numeric", year: "numeric" }).format(new Date(release.published_at))
+      : undefined;
+    return { stars, release: release?.tag_name && date ? { tag: release.tag_name, date } : undefined };
+  } catch {
+    return null;
+  }
+}
+
 const rowSizes = "(min-width: 1248px) 660px, (min-width: 768px) 58vw, calc(100vw - 32px)";
 
-export default function Home() {
+export const dynamic = "force-static";
+
+export default async function Home() {
+  const facts = await repoFacts();
   return (
     <>
       <header className="site-header">
@@ -209,19 +241,38 @@ export default function Home() {
             <div className="hero-copy">
               <h1>Infrastructure as code automation for Terraform and OpenTofu</h1>
               <p className="lede">
-                The open source platform that helps teams run, review and manage their infrastructure at scale. No
-                vendor lock-in, no licensing headache, self-hosted anywhere.
+                The open source platform that runs, reviews and manages infrastructure as code at scale. Terraform and
+                OpenTofu connect to it as a remote backend, so your code stays as it is. Self-hosted anywhere, no vendor
+                lock-in.
               </p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href={`${DOCS}/getting-started/deployment`}>
                   Get started
                 </a>
-                <a className="btn btn-lg" href={GITHUB}>
-                  <Image src="/github-mark-white.svg" alt="" width={16} height={16} className="invert-on-light" />
-                  View on GitHub
+                <a className="btn btn-lg" href={DOCS}>
+                  Read the docs
                 </a>
               </div>
-              <p className="hero-meta">Apache 2.0 licensed. Runs on Kubernetes or Docker Compose.</p>
+              <p className="hero-meta">
+                {facts && (
+                  <>
+                    <a href={GITHUB}>
+                      <Image src="/github-mark-white.svg" alt="" width={14} height={14} className="invert-on-light" />
+                      {facts.stars} stars on GitHub
+                    </a>
+                    {facts.release && (
+                      <>
+                        <span aria-hidden="true"> · </span>
+                        <a href={`${GITHUB}/releases/latest`}>
+                          Release <code>{facts.release.tag}</code>, {facts.release.date}
+                        </a>
+                      </>
+                    )}
+                    <span aria-hidden="true"> · </span>
+                  </>
+                )}
+                Apache 2.0 licensed
+              </p>
             </div>
             <div className="hero-shot">
               <div className="frame">
@@ -312,14 +363,33 @@ export default function Home() {
               </div>
             ))}
 
-            <div className="cta">
-              <h3>Ready to run it yourself?</h3>
-              <p>The deployment guide takes you from an empty cluster to your first run.</p>
-              <div className="hero-actions">
-                <a className="btn btn-primary btn-lg" href={`${DOCS}/getting-started/deployment`}>
-                  Get started
-                </a>
-              </div>
+          </div>
+        </section>
+
+        <section className="section" id="docs">
+          <div className="container">
+            <h2 className="section-title">Start with the documentation</h2>
+            <p className="section-intro">Everything on this page is documented end to end. Pick where you are.</p>
+            <div className="docs-grid">
+              {docs.map((entry) => (
+                <div className="docs-entry" key={entry.title}>
+                  <h3>{entry.title}</h3>
+                  <p>{entry.text}</p>
+                  <a className="doc-link" href={entry.href}>
+                    {entry.link} ↗
+                  </a>
+                  {entry.second && (
+                    <a className="doc-link" href={entry.second.href}>
+                      {entry.second.text} ↗
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="hero-actions">
+              <a className="btn btn-primary btn-lg" href={`${DOCS}/getting-started/deployment`}>
+                Get started
+              </a>
             </div>
           </div>
         </section>

@@ -332,6 +332,27 @@ img {
   color: var(--tk-text-secondary);
 }
 
+.hero-meta a {
+  display: inline-block;
+  padding: 10px 0;
+  margin: -10px 0;
+}
+
+.hero-meta a img {
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 6px;
+}
+
+.hero-meta a:hover {
+  color: var(--tk-link);
+}
+
+.hero-meta code {
+  font-family: var(--tk-font-mono);
+  font-size: 13px;
+}
+
 .hero-shot {
   margin-top: 48px;
 }
@@ -492,31 +513,41 @@ img {
   line-height: 20px;
 }
 
-/* Closing call to action after the last group. */
-.cta {
-  margin-top: 48px;
-  padding: 40px 24px;
-  border: 1px solid var(--tk-border);
-  border-radius: var(--tk-radius-lg);
-  background: var(--tk-bg-container);
-  text-align: center;
+/* Documentation entry points: a two-by-two list separated by rules, not cards. */
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 48px;
+  margin-top: 8px;
+  border-top: 1px solid var(--tk-border);
 }
 
-.cta h3 {
-  font-size: 24px;
+.docs-entry {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--tk-border);
+}
+
+.docs-entry h3 {
+  font-size: 20px;
   font-weight: 600;
-  line-height: 1.33;
+  line-height: 1.4;
 }
 
-.cta p {
-  margin: 8px auto 0;
-  max-width: 560px;
+.docs-entry p {
+  margin-top: 4px;
   color: var(--tk-text-secondary);
 }
 
-.cta .hero-actions {
-  justify-content: center;
-  margin-top: 24px;
+.docs-entry .doc-link {
+  margin-top: 12px;
+}
+
+.docs-entry .doc-link + .doc-link {
+  margin-left: 24px;
+}
+
+#docs .hero-actions {
+  margin-top: 32px;
 }
 
 /* Sponsors */
@@ -857,12 +888,13 @@ img {
     order: 0;
   }
 
-  .cards.compact {
+  .cards.compact,
+  .docs-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .cta {
-    padding: 32px 16px;
+  .docs-entry:last-child {
+    border-bottom: 0;
   }
 
   .site-footer nav {
