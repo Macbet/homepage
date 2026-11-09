@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="640" viewBox="0 0 760 640" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+  <!-- edges: solid for direct dependencies, dashed for references, like the state diagram -->
+  <path d="M150 90 C 210 140, 250 170, 300 200"/>
+  <path d="M150 90 C 280 70, 380 90, 480 160" stroke-dasharray="3 7"/>
+  <path d="M300 200 C 420 200, 540 210, 640 240" stroke-dasharray="3 7"/>
+  <path d="M300 200 C 270 260, 240 310, 220 360"/>
+  <path d="M480 160 C 450 250, 420 320, 400 400" stroke-dasharray="3 7"/>
+  <path d="M640 240 C 620 310, 600 370, 580 420"/>
+  <path d="M220 360 C 260 430, 300 490, 330 540" stroke-dasharray="3 7"/>
+  <path d="M400 400 C 380 450, 350 500, 330 540"/>
+  <path d="M400 400 C 450 460, 490 510, 520 560" stroke-dasharray="3 7"/>
+  <path d="M580 420 C 560 470, 540 520, 520 560"/>
+  <!-- nodes -->
+  <circle cx="150" cy="90" r="32" fill="#fff" fill-opacity=".5" stroke="none"/>
+  <circle cx="150" cy="90" r="12" fill="#fff" stroke="none"/>
+  <circle cx="300" cy="200" r="18" fill="#fff" fill-opacity=".7" stroke="none"/>
+  <circle cx="480" cy="160" r="14" fill="#fff" fill-opacity=".7" stroke="none"/>
+  <circle cx="640" cy="240" r="24" fill="#fff" fill-opacity=".5" stroke="none"/>
+  <circle cx="640" cy="240" r="9" fill="#fff" stroke="none"/>
+  <circle cx="220" cy="360" r="12" fill="#fff" fill-opacity=".8" stroke="none"/>
+  <circle cx="400" cy="400" r="28" fill="#fff" fill-opacity=".5" stroke="none"/>
+  <circle cx="400" cy="400" r="10" fill="#fff" stroke="none"/>
+  <circle cx="580" cy="420" r="10" fill="#fff" fill-opacity=".8" stroke="none"/>
+  <circle cx="330" cy="540" r="16" fill="#fff" fill-opacity=".7" stroke="none"/>
+  <circle cx="520" cy="560" r="12" fill="#fff" fill-opacity=".8" stroke="none"/>
+  <!-- satellites -->
+  <circle cx="700" cy="120" r="5" fill="#fff" fill-opacity=".6" stroke="none"/>
+  <circle cx="60" cy="250" r="4" fill="#fff" fill-opacity=".6" stroke="none"/>
+  <circle cx="720" cy="520" r="6" fill="#fff" fill-opacity=".5" stroke="none"/>
+  <circle cx="90" cy="520" r="5" fill="#fff" fill-opacity=".5" stroke="none"/>
+</svg>

@@ -132,8 +132,8 @@ const sponsors = [
 
 const support = [
   { href: "https://github.com/sponsors/terrakube-io", title: "GitHub Sponsors", text: "Recurring or one-time sponsorship through GitHub.", link: "Sponsor on GitHub" },
-  { href: "https://opencollective.com/terrakube", title: "Open Collective", text: "Transparent funding for the project's infrastructure and services.", link: "Open Collective" },
-  { href: "mailto:sponsor@terrakube.io", title: "Partnerships", text: "Talk to us about supporting Terrakube with licenses or services.", link: "sponsor@terrakube.io" },
+  { href: "https://opencollective.com/terrakube", title: "Open Collective", text: "Transparent funding for the project's infrastructure.", link: "Open Collective" },
+  { href: "mailto:sponsor@terrakube.io", title: "Partnerships", text: "Talk to us about licenses or services for the project.", link: "sponsor@terrakube.io" },
 ];
 
 const involved = [
@@ -168,6 +168,7 @@ export default function Home() {
 
       <main>
         <section className="hero">
+          <div className="hero-cluster" aria-hidden="true" />
           <div className="container">
             <div className="hero-copy">
               <h1>Infrastructure as code automation for Terraform and OpenTofu</h1>

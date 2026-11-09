@@ -10,6 +10,7 @@
   --tk-accent-hover: #9254de;
   --tk-accent-active: #531dab;
   --tk-link: #722ed1;
+  --tk-focus: #722ed1;
 
   --tk-bg-layout: #f0f2f5;
   --tk-bg-container: #ffffff;
@@ -38,13 +39,14 @@
   --tk-gutter: 24px;
   --tk-content: 1200px;
 
-  /* The node motif from the application's login page, as a tint over the layout background. */
-  --tk-sky: rgba(31, 41, 55, 0.075);
+  /* The node cluster behind the hero, drawn after the state diagram, as a tint over the layout background. */
+  --tk-sky: rgba(31, 41, 55, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --tk-link: #b37feb;
+    --tk-focus: #b37feb;
     --tk-bg-layout: #0d1117;
     --tk-bg-container: #161b22;
     --tk-bg-fill: #21262d;
@@ -53,7 +55,7 @@
     --tk-text: #e6edf3;
     --tk-text-secondary: #8b949e;
     --tk-text-tertiary: #7d8590;
-    --tk-sky: rgba(230, 237, 243, 0.07);
+    --tk-sky: rgba(230, 237, 243, 0.1);
   }
 }
 
@@ -106,8 +108,12 @@ img {
 }
 
 :focus-visible {
-  outline: 2px solid var(--tk-accent);
+  outline: 2px solid var(--tk-focus);
   outline-offset: 2px;
+}
+
+.btn-primary:focus-visible {
+  outline-color: var(--tk-text);
 }
 
 .container {
@@ -115,70 +121,6 @@ img {
   max-width: var(--tk-content);
   margin: 0 auto;
   padding: 0 var(--tk-gutter);
-}
-
-/*
- * Sky: three fixed layers of the node motif behind the page. Each layer is a masked tint, so it
- * follows the theme; with scroll-driven animations the layers drift at different speeds while the
- * page scrolls, which is the page's one authored motion. Without support the motif is static.
- */
-.sky {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.sky span {
-  position: absolute;
-  inset: -40vh 0;
-  background-color: var(--tk-sky);
-  -webkit-mask-image: url(/nodes.svg);
-  mask-image: url(/nodes.svg);
-  -webkit-mask-repeat: repeat;
-  mask-repeat: repeat;
-}
-
-.sky span:nth-child(1) {
-  -webkit-mask-size: 1040px;
-  mask-size: 1040px;
-  -webkit-mask-position: 120px 60px;
-  mask-position: 120px 60px;
-  opacity: 0.55;
-  --drift: -10vh;
-}
-
-.sky span:nth-child(2) {
-  -webkit-mask-size: 760px;
-  mask-size: 760px;
-  -webkit-mask-position: -260px 300px;
-  mask-position: -260px 300px;
-  opacity: 0.8;
-  --drift: -22vh;
-}
-
-.sky span:nth-child(3) {
-  -webkit-mask-size: 540px;
-  mask-size: 540px;
-  -webkit-mask-position: 380px -140px;
-  mask-position: 380px -140px;
-  --drift: -36vh;
-}
-
-@keyframes sky-drift {
-  to {
-    transform: translateY(var(--drift));
-  }
-}
-
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .sky span {
-      animation: sky-drift linear both;
-      animation-timeline: scroll(root);
-    }
-  }
 }
 
 /* Header: the graphite frame of the application. */
@@ -313,8 +255,51 @@ img {
 
 /* Hero */
 .hero {
-  border-bottom: 1px solid var(--tk-border-secondary);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--tk-border);
   padding: 64px 0;
+}
+
+.hero > .container {
+  position: relative;
+}
+
+/*
+ * One deliberate node cluster behind the hero, drawn after the product's state diagram. A masked
+ * tint, so it follows the theme. With scroll-driven animations it drifts up over the first screen of
+ * scrolling, the page's one authored motion; without support it is static.
+ */
+.hero-cluster {
+  position: absolute;
+  top: -40px;
+  right: -140px;
+  width: 760px;
+  height: 640px;
+  background-color: var(--tk-sky);
+  -webkit-mask-image: url(/cluster.svg);
+  mask-image: url(/cluster.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  pointer-events: none;
+}
+
+@keyframes cluster-drift {
+  to {
+    transform: translateY(-160px);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-cluster {
+      animation: cluster-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 900px;
+    }
+  }
 }
 
 .hero-copy {
@@ -392,13 +377,13 @@ img {
 }
 
 .group-title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.33;
 }
 
 .group-intro {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--tk-text-secondary);
 }
 
@@ -409,7 +394,7 @@ img {
   gap: 48px;
   align-items: center;
   padding: 40px 0;
-  border-bottom: 1px solid var(--tk-border-secondary);
+  border-bottom: 1px solid var(--tk-border);
 }
 
 .feature:nth-child(odd) {
@@ -562,13 +547,15 @@ img {
 }
 
 .card .doc-link {
-  margin-top: 8px;
+  margin-top: auto;
+  padding-top: 8px;
   align-self: flex-start;
+  color: var(--tk-link);
+  font-size: 14px;
 }
 
-.card-link .doc-link {
-  padding: 0;
-  margin-top: 8px;
+.card-link:hover .doc-link {
+  text-decoration: underline;
 }
 
 /* Community band: graphite, continuous with the header. */
@@ -657,8 +644,8 @@ img {
 
 .site-footer a {
   display: inline-block;
-  padding: 12px 0;
-  margin: -12px 0;
+  padding: 12px 8px;
+  margin: -12px -8px;
 }
 
 .site-footer a:hover {
@@ -745,6 +732,11 @@ img {
 }
 
 @media (max-width: 1023px) {
+  /* The cluster would sit under the headline on narrower screens. */
+  .hero-cluster {
+    display: none;
+  }
+
   /* Tablets and phones are touch-first: 44px controls, and the install command wraps. */
   .btn-lg,
   .hamburger-button {
@@ -800,8 +792,12 @@ img {
     font-size: 16px;
   }
 
+  .hero-actions {
+    flex-direction: column;
+  }
+
   .hero-actions .btn {
-    flex: 1 1 auto;
+    width: 100%;
   }
 
   .hero-shot {

@@ -16,14 +16,14 @@ export const metadata: Metadata = {
     description,
     url: "https://terrakube.io",
     siteName: "Terrakube",
-    images: [{ url: "/workspaces.png", width: 2304, height: 1440, alt: "Terrakube workspace list" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Terrakube workspace list" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Terrakube",
     description,
-    images: ["/workspaces.png"],
+    images: ["/og.png"],
   },
 };
 
@@ -35,11 +35,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="sky" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
         {children}
       </body>
     </html>
