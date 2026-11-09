@@ -120,7 +120,8 @@ const groups: Group[] = [
 ];
 
 const install = `helm repo add terrakube-repo https://helm.terrakube.io
-helm install terrakube terrakube-repo/terrakube -n terrakube --create-namespace -f values.yaml`;
+helm install terrakube terrakube-repo/terrakube \\
+  -n terrakube --create-namespace -f values.yaml`;
 
 const sponsors = [
   { src: "/jetbrains.png", alt: "JetBrains", width: 155, height: 33 },

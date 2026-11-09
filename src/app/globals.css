@@ -129,6 +129,9 @@ img {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 44px;
+  padding: 0 4px;
+  margin-left: -4px;
   font-size: 16px;
   font-weight: 600;
   color: var(--tk-ink-dark);
@@ -374,8 +377,8 @@ img {
   font-family: var(--tk-font-mono);
   font-size: 13px;
   line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  white-space: pre;
+  overflow-x: auto;
 }
 
 .cards.compact {
@@ -449,10 +452,10 @@ img {
 }
 
 @media (prefers-color-scheme: dark) {
-  /* Brand marks are drawn for paper; on graphite they become single-tone silhouettes. */
-  .sponsors img {
-    filter: brightness(0) invert(1);
-    opacity: 0.85;
+  /* Brand marks are drawn for paper, so the strip stays a paper tile inside the graphite page. */
+  .sponsors {
+    background: #f0f2f5;
+    border-color: var(--tk-graphite-border);
   }
 }
 
@@ -548,12 +551,12 @@ img {
 }
 
 .community li + li {
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 .community li a {
   display: inline-block;
-  padding: 6px 0;
+  padding: 10px 0;
   color: var(--tk-ink-dark);
 }
 
@@ -672,9 +675,45 @@ img {
   height: 16px;
 }
 
+@media (max-width: 1023px) {
+  /* Below the wide layout the backdrop would sit under the headline. */
+  .hero {
+    background-image: none;
+  }
+
+  /* Tablets and phones are touch-first: 44px controls, and the install command wraps. */
+  .btn-lg,
+  .hamburger-button {
+    height: 44px;
+  }
+
+  .hamburger-button {
+    width: 44px;
+  }
+
+  .code {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+}
+
 @media (max-width: 767px) {
   :root {
     --tk-gutter: 16px;
+  }
+
+  .btn-lg,
+  .hamburger-button {
+    height: 44px;
+  }
+
+  .hamburger-button {
+    width: 44px;
+  }
+
+  .code {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
   }
 
   .site-nav {
@@ -687,7 +726,6 @@ img {
 
   .hero {
     padding-top: 40px;
-    background-image: none;
   }
 
   .hero h1 {
