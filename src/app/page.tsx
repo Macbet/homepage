@@ -292,9 +292,7 @@ export default function Home() {
         <section className="section" id="sponsors">
           <div className="container">
             <h2 className="section-title">Supported by</h2>
-            <p className="section-intro">
-              Thanks to the following organizations for supporting the project with free licenses and services.
-            </p>
+            <p className="section-intro">These organizations support the project with free licenses and services.</p>
             <div className="sponsors">
               {sponsors.map((sponsor) => (
                 <Image key={sponsor.src} src={sponsor.src} alt={sponsor.alt} width={sponsor.width} height={sponsor.height} />
