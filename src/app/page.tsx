@@ -242,9 +242,6 @@ export default async function Home() {
               <Image src="/github-mark-white.svg" alt="" width={18} height={18} />
               {facts && <span>{facts.stars}</span>}
             </a>
-            <a className="btn btn-primary site-cta" href={`${DOCS}/getting-started/deployment`}>
-              Get started
-            </a>
             <HamburgerMenu links={navLinks} />
           </div>
         </div>

@@ -910,8 +910,7 @@ img {
     grid-template-columns: 1fr auto;
   }
 
-  .site-nav,
-  .site-cta {
+  .site-nav {
     display: none;
   }
 
