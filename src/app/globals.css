@@ -155,26 +155,18 @@ img {
   gap: 12px;
 }
 
-/* GitHub mark with the star count beside it, as repository badges read. */
-.gh-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 32px;
-  padding: 0 8px;
-  border-radius: var(--tk-radius-md);
-  color: var(--tk-ink-dark);
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
-}
-
-.gh-link:hover {
-  background: var(--tk-graphite-hover);
-}
-
-.gh-link img {
+/* The GitHub mark in the hero button, tinted with the button text so it follows the theme. */
+.gh-mark {
   width: 18px;
   height: 18px;
+  background: currentColor;
+  -webkit-mask: url(/github-mark-white.svg) center / contain no-repeat;
+  mask: url(/github-mark-white.svg) center / contain no-repeat;
+}
+
+.btn-count {
+  color: var(--tk-text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 .brand {

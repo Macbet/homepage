@@ -241,10 +241,6 @@ export default async function Home() {
             </a>
           </nav>
           <div className="site-actions">
-            <a className="gh-link" href={GITHUB} aria-label={facts ? `GitHub, ${facts.stars} stars` : "GitHub"}>
-              <Image src="/github-mark-white.svg" alt="" width={18} height={18} />
-              {facts && <span>{facts.stars}</span>}
-            </a>
             <HamburgerMenu links={navLinks} />
           </div>
         </div>
@@ -267,6 +263,11 @@ export default async function Home() {
                 </a>
                 <a className="btn btn-lg" href="#features">
                   See how it works
+                </a>
+                <a className="btn btn-lg" href={GITHUB} aria-label={facts ? `GitHub, ${facts.stars} stars` : "GitHub"}>
+                  <span className="gh-mark" aria-hidden="true" />
+                  GitHub
+                  {facts && <span className="btn-count">{facts.stars}</span>}
                 </a>
               </div>
               <p className="hero-meta">
