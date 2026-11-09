@@ -249,8 +249,8 @@ export default async function Home() {
                 <a className="btn btn-primary btn-lg" href={`${DOCS}/getting-started/deployment`}>
                   Get started
                 </a>
-                <a className="btn btn-lg" href={DOCS}>
-                  Read the docs
+                <a className="btn btn-lg" href="#features">
+                  See how it works
                 </a>
               </div>
               <p className="hero-meta">
