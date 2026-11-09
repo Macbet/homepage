@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import HamburgerMenu from "./HamburgerMenu";
 
 type Shot = { src: string; alt: string; width: number; height: number };
 
@@ -44,12 +43,6 @@ const SLACK = "https://join.slack.com/t/terrakubeworkspace/shared_invite/zt-2cx6
 
 /** The hero sequence, captured from the same run at four points of its life. */
 const heroFrames = ["hero-queued", "hero-approval", "hero-applying", "hero-done"];
-
-const navLinks = [
-  { href: DOCS, icon: "/img/gitbooklogo.webp", text: "Documentation" },
-  { href: GITHUB, icon: "/github-mark-white.svg", text: "GitHub" },
-  { href: SLACK, icon: "/img/slack.webp", text: "Slack" },
-];
 
 type Feature = {
   title: string;
@@ -232,17 +225,6 @@ export default async function Home() {
             <Image src="/img/terrakube.webp" alt="" width={25} height={28} priority />
             Terrakube
           </Link>
-          <nav className="site-nav" aria-label="Primary">
-            <a className="nav-link" href={DOCS}>
-              Documentation
-            </a>
-            <a className="nav-link" href={SLACK}>
-              Slack
-            </a>
-          </nav>
-          <div className="site-actions">
-            <HamburgerMenu links={navLinks} />
-          </div>
         </div>
       </header>
 

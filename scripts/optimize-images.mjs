@@ -26,7 +26,7 @@ for (const file of await readdir("assets/logos")) {
   jobs.push(sharp(join("assets/logos", file)).resize({ height: 56 }).webp({ quality: 90 }).toFile(join(out, `${name}.webp`)));
 }
 // small marks: the brand icon (28px) and the two nav icons (16px), at 2x.
-const icons = { "terrakube.png": 56, "slack.png": 32, "gitbooklogo.svg": 32 };
+const icons = { "terrakube.png": 56, "slack.png": 32 };
 for (const [file, size] of Object.entries(icons)) {
   const { name } = parse(file);
   jobs.push(sharp(join("assets/icons", file), { density: 300 }).resize({ height: size }).webp({ quality: 90, alphaQuality: 100 }).toFile(join(out, `${name}.webp`)));
