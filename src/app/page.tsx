@@ -230,19 +230,23 @@ export default async function Home() {
             Terrakube
           </Link>
           <nav className="site-nav" aria-label="Primary">
-            {navLinks.map((link) => (
-              <a key={link.href} className="nav-link" href={link.href}>
-                <Image src={link.icon} alt="" width={16} height={16} />
-                {link.text}
-                {link.href === GITHUB && facts && (
-                  <span className="star-badge" aria-label={`${facts.stars} stars`}>
-                    ★ {facts.stars}
-                  </span>
-                )}
-              </a>
-            ))}
+            <a className="nav-link" href={DOCS}>
+              Documentation
+            </a>
+            <a className="nav-link" href={SLACK}>
+              Slack
+            </a>
           </nav>
-          <HamburgerMenu links={navLinks} />
+          <div className="site-actions">
+            <a className="gh-link" href={GITHUB} aria-label={facts ? `GitHub, ${facts.stars} stars` : "GitHub"}>
+              <Image src="/github-mark-white.svg" alt="" width={18} height={18} />
+              {facts && <span>{facts.stars}</span>}
+            </a>
+            <a className="btn btn-primary site-cta" href={`${DOCS}/getting-started/deployment`}>
+              Get started
+            </a>
+            <HamburgerMenu links={navLinks} />
+          </div>
         </div>
       </header>
 
