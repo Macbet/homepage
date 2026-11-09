@@ -1,6 +1,22 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import HamburgerMenu from "./HamburgerMenu";
+
+type Shot = { src: string; alt: string; width: number; height: number };
+
+/** A product screenshot captured in both application themes; the dark capture is served to dark-scheme visitors. */
+function ThemedShot({ shot, sizes, priority }: { shot: Shot; sizes: string; priority?: boolean }) {
+  const common = { alt: shot.alt, width: shot.width, height: shot.height, sizes, priority };
+  const { props: dark } = getImageProps({ ...common, src: shot.src.replace(/\.png$/, "-dark.png") });
+  const { props: light } = getImageProps({ ...common, src: shot.src });
+  return (
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcSet={dark.srcSet} sizes={dark.sizes} />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes from the spread props */}
+      <img {...light} />
+    </picture>
+  );
+}
 
 const DOCS = "https://docs.terrakube.io";
 const GITHUB = "https://github.com/terrakube-io/terrakube";
@@ -16,7 +32,7 @@ type Feature = {
   title: string;
   description: string;
   link: { href: string; text: string };
-  image?: { src: string; alt: string; width: number; height: number };
+  image?: Shot;
   extra?: { description: string; link: { href: string; text: string } };
 };
 
@@ -41,7 +57,7 @@ const groups: Group[] = [
         description:
           "Pick the tool and the version per workspace. Both run against any cloud or on-premises configuration, with multiple teams collaborating in one place.",
         link: { href: `${DOCS}/user-guide/workspaces/creating-workspaces`, text: "Creating workspaces" },
-        image: { src: "/terraform-tofu.png", alt: "Choosing between Terraform and OpenTofu when creating a workspace", width: 1540, height: 780 },
+        image: { src: "/create-workspace.png", alt: "Choosing between Terraform and OpenTofu when creating a workspace", width: 1400, height: 709 },
       },
       {
         title: "Visual state",
@@ -189,11 +205,13 @@ export default function Home() {
             </div>
             <div className="hero-shot">
               <div className="frame">
-                <Image
-                  src="/workspaces.png"
-                  alt="Workspace list with completed, running, waiting approval and failed runs and their policy status"
-                  width={2304}
-                  height={1440}
+                <ThemedShot
+                  shot={{
+                    src: "/workspaces.png",
+                    alt: "Workspace list with completed, running, waiting approval and failed runs and their policy status",
+                    width: 2304,
+                    height: 1440,
+                  }}
                   sizes="(min-width: 1248px) 1152px, calc(100vw - 32px)"
                   priority
                 />
@@ -236,13 +254,7 @@ export default function Home() {
                     </div>
                     {feature.image ? (
                       <div className="frame">
-                        <Image
-                          src={feature.image.src}
-                          alt={feature.image.alt}
-                          width={feature.image.width}
-                          height={feature.image.height}
-                          sizes={rowSizes}
-                        />
+                        <ThemedShot shot={feature.image} sizes={rowSizes} />
                       </div>
                     ) : (
                       <pre className="code frame" aria-label="Helm install command">
