@@ -520,6 +520,36 @@ img {
   line-height: 20px;
 }
 
+/* How it fits: four verb-led steps in a row; the numbers carry the order, in monospace. */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 24px;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--tk-border);
+  list-style: none;
+}
+
+.step-index {
+  display: block;
+  font-family: var(--tk-font-mono);
+  font-size: 13px;
+  color: var(--tk-text-tertiary);
+}
+
+.steps h3 {
+  margin-top: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.steps p {
+  margin-top: 4px;
+  color: var(--tk-text-secondary);
+}
+
 /* Documentation entry points: a two-by-two list separated by rules, not cards. */
 .docs-grid {
   display: grid;
@@ -803,6 +833,10 @@ img {
 }
 
 @media (max-width: 1023px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   /* The cluster would sit under the headline on narrower screens. */
   .hero-cluster {
     display: none;
@@ -898,6 +932,11 @@ img {
   .cards.compact,
   .docs-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
   }
 
   .docs-entry:last-child {

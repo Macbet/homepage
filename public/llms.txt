@@ -1,0 +1,22 @@
+# Terrakube
+
+> Open source infrastructure as code automation and collaboration for Terraform and OpenTofu. Self-hosted on Kubernetes (Helm) or Docker Compose. Terraform and OpenTofu connect to it as a remote backend.
+
+## Documentation
+
+- [Getting started](https://docs.terrakube.io/getting-started/getting-started)
+- [Deployment](https://docs.terrakube.io/getting-started/deployment)
+- [User management and SSO](https://docs.terrakube.io/getting-started/user-management)
+- [Creating workspaces](https://docs.terrakube.io/run-terraform/workspaces/creating-workspaces)
+- [CLI-driven workflow](https://docs.terrakube.io/run-terraform/workspaces/cli-driven-workflow)
+- [API-driven workflow](https://docs.terrakube.io/run-terraform/workspaces/api-driven-workflow)
+- [Templates](https://docs.terrakube.io/set-up/organizations/templates)
+- [Private registry](https://docs.terrakube.io/private-registry/private-registry)
+- [Terrakube CLI](https://docs.terrakube.io/integrate/terrakube-cli)
+
+## Source and community
+
+- [Source code](https://github.com/terrakube-io/terrakube) (Apache 2.0)
+- [Helm chart](https://github.com/terrakube-io/terrakube-helm-chart)
+- [Releases](https://github.com/terrakube-io/terrakube/releases)
+- [Slack](https://join.slack.com/t/terrakubeworkspace/shared_invite/zt-2cx6yn95t-2CTBGvsQhBQJ5bfbG4peFg)

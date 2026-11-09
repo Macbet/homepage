@@ -179,9 +179,16 @@ const involved = [
   { href: `${DOCS}/getting-started/deployment`, text: "Test deployments on different cloud providers" },
 ];
 
+const steps = [
+  { title: "Install", text: "Helm on Kubernetes or Docker Compose. One release, your own domain." },
+  { title: "Connect", text: "Sign in through your identity provider; link GitHub, GitLab, Bitbucket or Azure DevOps." },
+  { title: "Run", text: "Push to a branch, or point the Terraform CLI at the remote backend. Review the plan, approve, apply." },
+  { title: "Govern", text: "Teams map groups to roles; templates, policies and the private registry keep every workspace in line." },
+];
+
 const docs = [
   { title: "Install it", text: "Helm on Kubernetes or Docker Compose, with the values and secrets explained.", href: `${DOCS}/getting-started/deployment`, link: "Deployment guide" },
-  { title: "Run your first workspace", text: "Connect a repository or push from the CLI, then plan and apply.", href: `${DOCS}/run-terraform/workspaces/creating-workspaces`, link: "Creating workspaces" },
+  { title: "Run your first workspace", text: "Connect a GitHub, GitLab, Bitbucket or Azure DevOps repository, or push from the CLI, then plan and apply.", href: `${DOCS}/run-terraform/workspaces/creating-workspaces`, link: "Creating workspaces" },
   { title: "Set up access", text: "Dex connects your identity provider; teams map groups to roles.", href: `${DOCS}/getting-started/user-management`, link: "User management" },
   { title: "Drive it from code", text: "A CLI for day-to-day work and an API for everything else.", href: `${DOCS}/integrate/terrakube-cli`, link: "Terrakube CLI", second: { href: `${DOCS}/run-terraform/workspaces/api-driven-workflow`, text: "API-driven workflow" } },
 ];
@@ -242,8 +249,8 @@ export default async function Home() {
               <h1>Infrastructure as code automation for Terraform and OpenTofu</h1>
               <p className="lede">
                 The open source platform that runs, reviews and manages infrastructure as code at scale. Terraform and
-                OpenTofu connect to it as a remote backend, so your code stays as it is. Self-hosted anywhere, no vendor
-                lock-in.
+                OpenTofu connect to it as a remote backend, so your code stays as it is. Platform teams govern
+                workspaces, access and policies; application engineers plan, apply and read the result.
               </p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href={`${DOCS}/getting-started/deployment`}>
@@ -366,6 +373,21 @@ export default async function Home() {
           </div>
         </section>
 
+        <section className="section" id="how-it-fits">
+          <div className="container">
+            <h2 className="section-title">How it fits into your setup</h2>
+            <ol className="steps">
+              {steps.map((step, i) => (
+                <li key={step.title}>
+                  <span className="step-index">{String(i + 1).padStart(2, "0")}</span>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
         <section className="section" id="docs">
           <div className="container">
             <h2 className="section-title">Start with the documentation</h2>
@@ -424,7 +446,7 @@ export default async function Home() {
         <section className="community" id="community">
           <div className="container">
             <div>
-              <h2>Join the community</h2>
+              <h2>Open source, by engineers for engineers</h2>
               <p>
                 Whether you are fixing bugs, adding features, improving the docs or sharing feedback, your input makes a
                 difference.
