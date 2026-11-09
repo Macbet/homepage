@@ -53,7 +53,7 @@ type Feature = {
   description: string;
   link: { href: string; text: string };
   image?: Shot;
-  extra?: { description: string; link: { href: string; text: string } };
+  extra?: { description?: string; link: { href: string; text: string } };
 };
 
 type Compact = { title: string; description: string; link: { href: string; text: string }; tags?: string[] };
@@ -67,33 +67,28 @@ const groups: Group[] = [
     features: [
       {
         title: "Runs you can read before you apply",
-        description:
-          "Every run shows the plan as a list of resource changes, with the console output one click away. Approvals happen in the same view.",
+        description: "Every run shows the plan as a list of resource changes, with the console one click away. Approve it in the same view.",
         link: { href: `${DOCS}/user-guide/workspaces/creating-workspaces`, text: "Workspaces and runs" },
         image: { src: "/run.png", alt: "A completed run showing three resources to create, two to change and one to destroy", width: 1400, height: 760 },
       },
       {
         title: "Terraform and OpenTofu",
-        description:
-          "Pick the tool and the version per workspace. Both run against any cloud or on-premises configuration, with multiple teams collaborating in one place.",
+        description: "Pick the tool and the version per workspace. Both run against any cloud or on-premises configuration.",
         link: { href: `${DOCS}/user-guide/workspaces/creating-workspaces`, text: "Creating workspaces" },
         image: { src: "/create-workspace.png", alt: "Choosing between Terraform and OpenTofu when creating a workspace", width: 1400, height: 709 },
       },
       {
         title: "Visual state",
-        description: "See every resource in the state as a dependency diagram, inspect its attributes, and roll back to an earlier version when you need to.",
+        description: "Every resource in the state as a dependency diagram. Inspect attributes, compare versions, roll back.",
         link: { href: `${DOCS}/user-guide/workspaces/terraform-state#visual-state`, text: "Terraform state" },
         image: { src: "/visual-state.png", alt: "State version shown as a diagram of VPC, subnets, gateway, instance and database", width: 1400, height: 874 },
       },
       {
         title: "Templates and schedules",
-        description: "Templates define the steps a run executes, from plain plan and apply to custom workflows that call external tools.",
+        description: "Templates define the steps a run executes, from plan and apply to custom workflows that call external tools. Schedules run them without anyone clicking.",
         link: { href: `${DOCS}/user-guide/organizations/templates`, text: "Templates" },
         image: { src: "/templates.png", alt: "Organization templates: Plan, Plan and Apply, Destroy and CLI variants", width: 1400, height: 671 },
-        extra: {
-          description: "Schedules run a template automatically, without manual intervention.",
-          link: { href: `${DOCS}/user-guide/workspaces/workspace-scheduler`, text: "Workspace scheduler" },
-        },
+        extra: { link: { href: `${DOCS}/user-guide/workspaces/workspace-scheduler`, text: "Workspace scheduler" } },
       },
     ],
   },
@@ -103,8 +98,7 @@ const groups: Group[] = [
     features: [
       {
         title: "Access control",
-        description:
-          "A team maps an identity provider group to a role in the organization, so people only see what their job requires. Teams and users manage their own tokens.",
+        description: "A team maps an identity provider group to a role in the organization, so people only see what their job requires.",
         link: { href: `${DOCS}/user-guide/organizations/team-management`, text: "Team management" },
         image: { src: "/teams.png", alt: "Teams settings with an admin team and a developers team", width: 1400, height: 481 },
       },
@@ -118,7 +112,7 @@ const groups: Group[] = [
       },
       {
         title: "Dynamic credentials",
-        description: "Authenticate with cloud providers at run time instead of storing long-lived credentials in workspaces.",
+        description: "Cloud credentials issued at run time, nothing long-lived stored in the workspace.",
         tags: ["Amazon Web Services", "Azure", "Google Cloud", "Vault", "OpenBao"],
         link: { href: `${DOCS}/user-guide/workspaces/dynamic-provider-credentials`, text: "Dynamic provider credentials" },
       },
@@ -130,25 +124,25 @@ const groups: Group[] = [
     features: [
       {
         title: "Private registry",
-        description: "Publish, version and reuse internal modules and providers, with usage snippets and the README right next to the inputs and outputs.",
+        description: "Publish, version and reuse internal modules and providers, with the usage snippet and README next to inputs and outputs.",
         link: { href: `${DOCS}/user-guide/private-registry`, text: "Private registry" },
         image: { src: "/registry.png", alt: "A private module page with the usage block, version, source and inputs", width: 1400, height: 697 },
       },
       {
         title: "Self-hosted anywhere",
-        description: "Install it in a Kubernetes cluster on any cloud provider or on-premises, or run the whole platform with Docker Compose.",
+        description: "A Kubernetes cluster on any cloud or on-premises, or the whole platform with Docker Compose.",
         link: { href: `${DOCS}/getting-started/deployment`, text: "Deployment" },
       },
     ],
     compact: [
       {
         title: "Private agents",
-        description: "Run jobs on self-hosted or ephemeral agents in an isolated environment you control, close to your infrastructure.",
+        description: "Run jobs on self-hosted or ephemeral agents, in an environment you control.",
         link: { href: `${DOCS}/getting-started/deployment/ephemeral-agents`, text: "Ephemeral agents" },
       },
       {
         title: "Open source",
-        description: "Apache 2.0 licensed. Read the code, extend the platform, and get a working development environment from the dev container in minutes.",
+        description: "Read the code, extend the platform, and start a development environment from the dev container in minutes.",
         link: { href: `${DOCS}/getting-started/development/dev-container`, text: "Development environment" },
       },
     ],
@@ -175,7 +169,6 @@ const support = [
 const involved = [
   { href: `${GITHUB}/discussions`, text: "Join GitHub discussions to share ideas" },
   { href: `${GITHUB}/issues`, text: "Open issues for bugs or feature suggestions" },
-  { href: SLACK, text: "Help other users in the Slack community" },
   { href: `${DOCS}/getting-started/deployment`, text: "Test deployments on different cloud providers" },
 ];
 
@@ -243,10 +236,6 @@ export default function Home() {
         <section className="section" id="features">
           <div className="container">
             <h2 className="section-title">Everything you need to run infrastructure as code</h2>
-            <p className="section-intro">
-              Automate, collaborate on and manage your infrastructure from one place, with the same tools your teams use
-              today.
-            </p>
 
             {groups.map((group) => (
               <div className="group" key={group.title} id={group.title.toLowerCase()}>
@@ -265,7 +254,7 @@ export default function Home() {
                       </a>
                       {feature.extra && (
                         <>
-                          <p>{feature.extra.description}</p>
+                          {feature.extra.description && <p>{feature.extra.description}</p>}
                           <a className="doc-link" href={feature.extra.link.href}>
                             {feature.extra.link.text} ↗
                           </a>
@@ -309,7 +298,7 @@ export default function Home() {
 
             <div className="cta">
               <h3>Ready to run it yourself?</h3>
-              <p>Deploy Terrakube with Helm or Docker Compose and connect your first repository in an afternoon.</p>
+              <p>Helm or Docker Compose, your first repository connected in an afternoon.</p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href={`${DOCS}/getting-started/deployment`}>
                   Get started
@@ -337,7 +326,6 @@ export default function Home() {
         <section className="section" id="support">
           <div className="container">
             <h2 className="section-title">Support the project</h2>
-            <p className="section-intro">Terrakube is built and funded by its community.</p>
             <div className="cards">
               {support.map((item) => (
                 <a className="card card-link" key={item.href} href={item.href}>
